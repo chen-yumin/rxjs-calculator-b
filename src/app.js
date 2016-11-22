@@ -4,8 +4,8 @@ let result = 0;
 let operation = '';
 let displayRefresh = false;
 
-var calcTempResult = function() {
-  var v = parseFloat(document.getElementsByTagName('input')[0].value);
+const calcTempResult = () => {
+  const v = parseFloat(document.getElementsByTagName('input')[0].value);
   if (operation === '+') {
     result += v;
   } else if (operation === '-') {
