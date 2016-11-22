@@ -73,11 +73,10 @@
 	};
 
 	var btns = document.getElementsByClassName("flex-item");
-	var body = document.getElementsByTagName('body')[0];
 
 	var stream$ = _Rx2.default.Observable.from(btns).map(function (btn) {
 	  return _Rx2.default.Observable.fromEvent(btn, 'click').mapTo(btn.textContent);
-	}).mergeAll().merge(_Rx2.default.Observable.fromEvent(body, 'keypress'));
+	}).mergeAll().merge(_Rx2.default.Observable.fromEvent(document, 'keypress').pluck('key'));
 
 	stream$.subscribe(function (key) {
 	  if (/\d/.test(key) || key === '.') {

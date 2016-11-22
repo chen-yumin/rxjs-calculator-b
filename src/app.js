@@ -21,13 +21,13 @@ const calcTempResult = () => {
 };
 
 const btns = document.getElementsByClassName("flex-item");
-const body = document.getElementsByTagName('body')[0];
 
 const stream$ = Rx.Observable.from(btns)
   .map(btn => Rx.Observable.fromEvent(btn, 'click')
     .mapTo(btn.textContent))
   .mergeAll()
-  .merge(Rx.Observable.fromEvent(body, 'keypress'));
+  .merge(Rx.Observable.fromEvent(document, 'keypress')
+    .pluck('key'));
 
 stream$.subscribe(key => {
   if (/\d/.test(key) || key === '.') {
