@@ -1,8 +1,8 @@
 import Rx from 'rxjs/Rx';
 
-var result = 0;
-var operation = '';
-var displayRefresh = false;
+let result = 0;
+let operation = '';
+let displayRefresh = false;
 
 var calcTempResult = function() {
   var v = parseFloat(document.getElementsByTagName('input')[0].value);
@@ -20,7 +20,16 @@ var calcTempResult = function() {
   document.getElementsByTagName('input')[0].value = result;
 };
 
-var processKey = function(key) {
+const btns = document.getElementsByClassName("flex-item");
+const body = document.getElementsByTagName('body')[0];
+
+const stream$ = Rx.Observable.from(btns)
+  .map(btn => Rx.Observable.fromEvent(btn, 'click')
+    .mapTo(btn.textContent))
+  .mergeAll()
+  .merge(Rx.Observable.fromEvent(body, 'keypress'));
+
+stream$.subscribe(key => {
   if (/\d/.test(key) || key === '.') {
     // If the button is a number
     if (displayRefresh) {
@@ -38,16 +47,4 @@ var processKey = function(key) {
     operation = key;
     displayRefresh = true;
   }
-}
-
-var btns = document.getElementsByClassName("flex-item");
-[].forEach.call(btns, function(btn) {
-  btn.onclick = function() {
-    processKey(btn.textContent);
-  };
-
-});
-
-document.getElementsByTagName('body')[0].addEventListener("keypress", function(event) {
-  processKey(event.key);
 });

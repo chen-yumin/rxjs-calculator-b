@@ -72,7 +72,14 @@
 	  document.getElementsByTagName('input')[0].value = result;
 	};
 
-	var processKey = function processKey(key) {
+	var btns = document.getElementsByClassName("flex-item");
+	var body = document.getElementsByTagName('body')[0];
+
+	var stream$ = _Rx2.default.Observable.from(btns).map(function (btn) {
+	  return _Rx2.default.Observable.fromEvent(btn, 'click').mapTo(btn.textContent);
+	}).mergeAll().merge(_Rx2.default.Observable.fromEvent(body, 'keypress'));
+
+	stream$.subscribe(function (key) {
 	  if (/\d/.test(key) || key === '.') {
 	    // If the button is a number
 	    if (displayRefresh) {
@@ -90,17 +97,6 @@
 	    operation = key;
 	    displayRefresh = true;
 	  }
-	};
-
-	var btns = document.getElementsByClassName("flex-item");
-	[].forEach.call(btns, function (btn) {
-	  btn.onclick = function () {
-	    processKey(btn.textContent);
-	  };
-	});
-
-	document.getElementsByTagName('body')[0].addEventListener("keypress", function (event) {
-	  processKey(event.key);
 	});
 
 /***/ },
