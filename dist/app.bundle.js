@@ -56,22 +56,6 @@
 	var operation = '';
 	var displayRefresh = false;
 
-	var calcTempResult = function calcTempResult() {
-	  var v = parseFloat(document.getElementsByTagName('input')[0].value);
-	  if (operation === '+') {
-	    result += v;
-	  } else if (operation === '-') {
-	    result -= v;
-	  } else if (operation === 'x' || operation === '*') {
-	    result *= v;
-	  } else if (operation === '÷' || operation === '/') {
-	    result /= v;
-	  } else {
-	    result = v;
-	  }
-	  document.getElementsByTagName('input')[0].value = result;
-	};
-
 	var btns = document.getElementsByClassName("flex-item");
 
 	var stream$ = _Rx2.default.Observable.from(btns).map(function (btn) {
@@ -92,7 +76,19 @@
 	    operation = '';
 	    document.getElementsByTagName('input')[0].value = '0';
 	  } else {
-	    calcTempResult();
+	    var v = parseFloat(document.getElementsByTagName('input')[0].value);
+	    if (operation === '+') {
+	      result += v;
+	    } else if (operation === '-') {
+	      result -= v;
+	    } else if (operation === 'x' || operation === '*') {
+	      result *= v;
+	    } else if (operation === '÷' || operation === '/') {
+	      result /= v;
+	    } else {
+	      result = v;
+	    }
+	    document.getElementsByTagName('input')[0].value = result;
 	    operation = key;
 	    displayRefresh = true;
 	  }

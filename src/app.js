@@ -4,22 +4,6 @@ let result = 0;
 let operation = '';
 let displayRefresh = false;
 
-const calcTempResult = () => {
-  const v = parseFloat(document.getElementsByTagName('input')[0].value);
-  if (operation === '+') {
-    result += v;
-  } else if (operation === '-') {
-    result -= v;
-  } else if (operation === 'x' || operation === '*') {
-    result *= v;
-  } else if (operation === '÷' || operation === '/') {
-    result /= v;
-  } else {
-    result = v;
-  }
-  document.getElementsByTagName('input')[0].value = result;
-};
-
 const btns = document.getElementsByClassName("flex-item");
 
 const stream$ = Rx.Observable.from(btns)
@@ -43,7 +27,19 @@ stream$.subscribe(key => {
     operation = '';
     document.getElementsByTagName('input')[0].value = '0';
   } else {
-    calcTempResult();
+    const v = parseFloat(document.getElementsByTagName('input')[0].value);
+    if (operation === '+') {
+      result += v;
+    } else if (operation === '-') {
+      result -= v;
+    } else if (operation === 'x' || operation === '*') {
+      result *= v;
+    } else if (operation === '÷' || operation === '/') {
+      result /= v;
+    } else {
+      result = v;
+    }
+    document.getElementsByTagName('input')[0].value = result;
     operation = key;
     displayRefresh = true;
   }
